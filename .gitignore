@@ -128,8 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Misc. added by Gilford
+# Misc. unused/temporary files, added by Gilford
 *~
 
-# Data added by Gilford
-# ./data/
+# Data too large to archive here, added by Gilford
+data/cmip5/
