@@ -128,5 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# Added by Gilford
+# Misc. added by Gilford
 *~
+
+# Data added by Gilford
+# ./data/
