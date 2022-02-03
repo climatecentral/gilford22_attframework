@@ -45,3 +45,18 @@ def dt64_yrslice(lower_yr=1985,upper_yr=2015):
     slice_range=[str(int(lower_yr))+'-01-01',str(int(upper_yr))+'-12-31']
     sliceout=slice(slice_range[0],slice_range[1])
     return(sliceout)
+
+### ------------------- DATA MANAGEMENT ------------------- ###
+
+# Function to 1d interpolation to fill missing values
+def fill_nan(A):
+    '''
+    interpolate to fill nan values
+    '''
+    from scipy import interpolate
+    
+    inds = np.arange(A.shape[0])
+    good = np.where(np.isfinite(A))
+    f = interpolate.interp1d(inds[good], A[good],bounds_error=False)
+    B = np.where(np.isfinite(A),A,f(inds))
+    return B
