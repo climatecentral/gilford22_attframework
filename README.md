@@ -45,7 +45,9 @@ The observational and modeling data used in this work are not currently archived
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Portions of this code, specifically the [cmip5_bias_adjustment.py](./cmip5_bias_adjustment.py) module and the [BiasAdjust_model_run.ipynb](./BiasAdjust_model_run.ipynb) notebook are licensed directly under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.en.html), which is compatible with the MIT License. Source code on which these software products are based is provided in  [/isimip3-source/](./isimip3-source/), and is forked from the [isimip3 repository](https://github.com/ssobie/isimip3) as published on 7 March 2019.
 
 ## Acknowledgments
 
