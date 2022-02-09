@@ -108,50 +108,65 @@ def bias_adjust_singleloc(xobscal_loc,xsimcal_loc,xsimadj_loc,cal_yrgrid,adj_yrg
         return(np.copy(xsimadj_loc))
     
     # detrend the timeseries at this location for input to the Lange BA
-    _,detrend_ts,trend_ts=detrend_each_ts_ufunc(xobscal_loc, xsimcal_loc, xsimadj_loc, cal_yrgrid, adj_yrgrid)
+    _,detrend_ts,trend_ts=detrend_each_ts(xobscal_loc, xsimcal_loc, xsimadj_loc, cal_yrgrid, adj_yrgrid)
     
     # do the bias adjustment for this month and location
-    simfutureBA_DT=map_quantiles_parametric_trend_preserving(
-        detrend_ts['x_obs_train_detrend'], detrend_ts['x_sim_train_detrend'], detrend_ts['x_sim_future_detrend'], 
+    simadjBA_DT=map_quantiles_parametric_trend_preserving(
+        detrend_ts['x_obs_cal_detrend'], detrend_ts['x_sim_cal_detrend'], detrend_ts['x_sim_adj_detrend'], 
         distribution=options['distribution'], trend_preservation=options['trend_preservation'],
     )
-    
+
     # restore the trend to the bias adjusted distribution at this location
-    xsimadj_BA = uf.subtract_or_add_trend(simfutureBA_DT, future_yrgrid, trend_ts['x_sim_future_trend'])
+    xsimadj_BA = subtract_or_add_trend(simadjBA_DT, adj_yrgrid, trend_ts['x_sim_adj_trend'])
     
+    # go back to the above program level, returning the bias adjusted dataset
     return(xsimadj_BA)
     
 ### ------------------- BIAS ADJUSTMENT UTILITIES ------------------- ###
 
 # Function to detrend each timeseries of the three we are concerned with
-def detrend_each_ts_ufunc(x_obs_train, x_sim_train, x_sim_fut,train_yrgrid,future_yrgrid):
+def detrend_each_ts(x_obs_cal, x_sim_cal, x_sim_fut, cal_yrgrid, adj_yrgrid):
+    """ 
+    This function is a wrapper that enabling detrending of xarray datasets
+    used in the Lange bias adjustment calculations
+    
+    x_obs_cal, x_sim_cal, x_sim_fut, are single timeseries to be detrended
+    cal_yrgrid, adj_yrgrid are the yearly grids the timeseries lie on
 
-    x_obs_train_DETREND,x_obs_train_TREND=subtract_or_add_trend(x_obs_train,train_yrgrid, trend=None) 
-    x_sim_train_DETREND,x_sim_train_TREND=subtract_or_add_trend(x_sim_train, train_yrgrid, trend=None)
-    x_sim_fut_DETREND,x_sim_fut_TREND=subtract_or_add_trend(x_sim_fut, future_yrgrid, trend=None)
+    Outputs are stored into dictionaries and returned to the user for the remainder
+    of the bias adjustment process.
+    """
+
+    # calculate the trend and detrended timeseries for each dataset
+    # noting that TREND represents just the stationary year-over-year linear change
+    x_obs_cal_DETREND,x_obs_cal_TREND=subtract_or_add_trend(x_obs_cal,cal_yrgrid, trend=None) 
+    x_sim_cal_DETREND,x_sim_cal_TREND=subtract_or_add_trend(x_sim_cal, cal_yrgrid, trend=None)
+    x_sim_fut_DETREND,x_sim_fut_TREND=subtract_or_add_trend(x_sim_fut, adj_yrgrid, trend=None)
 
     # store detrend and trend timeseries
     detrend_ts={
-        'x_obs_train_detrend':x_obs_train_DETREND,
-        'x_sim_train_detrend':x_sim_train_DETREND,
-        'x_sim_future_detrend':x_sim_fut_DETREND,
+        'x_obs_cal_detrend':x_obs_cal_DETREND,
+        'x_sim_cal_detrend':x_sim_cal_DETREND,
+        'x_sim_adj_detrend':x_sim_fut_DETREND,
     }
     trend_ts={
-        'x_obs_train_trend':x_obs_train_TREND,
-        'x_sim_train_trend':x_sim_train_TREND,
-        'x_sim_future_trend':x_sim_fut_TREND,
+        'x_obs_cal_trend':x_obs_cal_TREND,
+        'x_sim_cal_trend':x_sim_cal_TREND,
+        'x_sim_adj_trend':x_sim_fut_TREND,
     }
     
-    # calculate and store the trends
+    # calculate and store the trends from their slopes
+    # and put into units of Celsius per decade
     trends={
-        'obs_train_CperDecade':(x_obs_train_TREND[1]-x_obs_train_TREND[0])*10,
-        'sim_train_CperDecade':(x_sim_train_TREND[1]-x_sim_train_TREND[0])*10,
-        'sim_future_CperDecade':(x_sim_fut_TREND[1]-x_sim_fut_TREND[0])*10,
+        'obs_cal_CperDecade':(x_obs_cal_TREND[1]-x_obs_cal_TREND[0])*10,
+        'sim_cal_CperDecade':(x_sim_cal_TREND[1]-x_sim_cal_TREND[0])*10,
+        'sim_adj_CperDecade':(x_sim_fut_TREND[1]-x_sim_fut_TREND[0])*10,
     }
     
     # go back to the above program
     return(trends,detrend_ts,trend_ts)
 
+# Function (by Lange) to add or subtract a trend from a single timeseries
 def subtract_or_add_trend(x, years, trend=None):
     """
     Subtracts or adds trend from or to x.
