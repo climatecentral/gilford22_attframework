@@ -30,7 +30,7 @@ statistical_downscaling.
 
 import collections
 import warnings
-import iris
+# import iris
 import numpy as np
 import datetime as dt
 import scipy.stats as sps
