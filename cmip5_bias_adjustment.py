@@ -18,7 +18,7 @@ import xarray as xr
 ### ------------------- XARRAY WRAPPER ENABLING GLOBALLY-RESOLVED BA ------------------- ###
 
 # Function using apply_ufunc to calculate a month's 
-def xr_bias_adjust_singlemonth(xobscal,xsimcal,xsimadj,options=None):
+def xr_bias_adjust_singlemonth(xobscal,xsimcal,xsimadj):
     """ 
     This function is an xarray wrapper that enables bias adjustment for a single month
     of climate model data over all space (lat/lon). The model data should be in an xarray
@@ -28,8 +28,6 @@ def xr_bias_adjust_singlemonth(xobscal,xsimcal,xsimadj,options=None):
     
     xobscal, xsimcal, and xsimadj are all xarray datasets with only a single
     calendar month's data timeseries (over all years considered)
-    
-    options are the user defined choices for the bias adjustment code from Lange
     """
     
     # rename the time index temporarily for the simulated adjustment dataset to work with xarray
@@ -53,9 +51,6 @@ def xr_bias_adjust_singlemonth(xobscal,xsimcal,xsimadj,options=None):
 
         # define the time grids that the datasets lie along
         cal_yrgrid, adj_yrgrid,
-
-        # pass the options dictionary as an argument to the "singleloc" function
-        kwargs=dict(options=options),
         
         # define the time dimensions of the inputs and outputs
         input_core_dims=[
@@ -80,7 +75,7 @@ def xr_bias_adjust_singlemonth(xobscal,xsimcal,xsimadj,options=None):
 
 ### ------------------- BIAS ADJUSTMENT AT A SINGLE LOCATION ------------------- ###
     
-def bias_adjust_singleloc(xobscal_loc,xsimcal_loc,xsimadj_loc,cal_yrgrid,adj_yrgrid,options):
+def bias_adjust_singleloc(xobscal_loc,xsimcal_loc,xsimadj_loc,cal_yrgrid,adj_yrgrid):
     """ 
     This function calculates the bias adjustment for a single location
     
@@ -95,8 +90,6 @@ def bias_adjust_singleloc(xobscal_loc,xsimcal_loc,xsimadj_loc,cal_yrgrid,adj_yrg
     
     If there is only missing data at this geolocation, bias adjustment is skipped
     and the xsimadj_BA is returned, with all missing values (np.nan)
-    
-    options are the user defined choices for the bias adjustment code from Lange
     """
     
     # Check for whether there is only missing data at this lat/lon
@@ -112,8 +105,7 @@ def bias_adjust_singleloc(xobscal_loc,xsimcal_loc,xsimadj_loc,cal_yrgrid,adj_yrg
     
     # do the bias adjustment for this month and location
     simadjBA_DT=map_quantiles_parametric_trend_preserving(
-        detrend_ts['x_obs_cal_detrend'], detrend_ts['x_sim_cal_detrend'], detrend_ts['x_sim_adj_detrend'], 
-        distribution=options['distribution'], trend_preservation=options['trend_preservation'],
+        detrend_ts['x_obs_cal_detrend'], detrend_ts['x_sim_cal_detrend'], detrend_ts['x_sim_adj_detrend']
     )
 
     # restore the trend to the bias adjusted distribution at this location
@@ -136,16 +128,17 @@ import warnings
 
 # Function to perform bias adjustment calculations
 def map_quantiles_parametric_trend_preserving(
-        x_obs_hist, x_sim_hist, x_sim_fut, 
-        distribution='normal', trend_preservation='additive',
-        n_quantiles=50, p_value_eps=1e-10,
-        max_change_factor=100., max_adjustment_factor=9.,
-        adjust_p_values=False,
-        lower_bound=None, lower_threshold=None,
-        upper_bound=None, upper_threshold=None):
+        x_obs_hist, x_sim_hist, x_sim_fut):
     """
     Adjusts biases using the trend-preserving parametric quantile mapping
     method described in Lange (2019) <https://doi.org/10.5194/gmd-2019-36>.
+
+    This code is modified from its original version for use in the TMAX
+    CMIP5 bias adjustment of Gilford et al. (2022). Some variables/lines that 
+    were unecessary in the Gilford application (e.g. outside the scope of
+    bias adjustment of temperature) have been removed. We also fix several parameters
+    that formerly served as options in the Lange (2019) BA code, but are fixed
+    during TMAX bias adjustment to 'tas' settings
 
     Parameters
     ----------
@@ -158,66 +151,47 @@ def map_quantiles_parametric_trend_preserving(
     x_sim_fut : array
         Time series of simulated climate data representing the future or
         application time period.
-    distribution : str, optional
-        Kind of distribution used for parametric quantile mapping:
-        ['normal', 'weibull', 'gamma', 'beta', 'rice'].
-    trend_preservation : str, optional
-        Kind of trend preservation used for non-parametric quantile mapping:
-        ['additive', 'multiplicative', 'mixed', 'bounded'].
+
+    FIXED BA PARAMETERS FOR GILFORD ET AL. 2022
+    (Values are set to their defaults for 'tas')
+    ----------
+    
+    distribution : 'normal'
+        Kind of distribution used for parametric quantile mapping.
+
+    trend_preservation : 'additive'
+        Kind of trend preservation used for non-parametric quantile mapping.
+
+    p_value_eps : 1e-10
+        In order to keep p-values with numerically stable limits, they are
+        capped at p_value_eps (lower bound) and 1 - p_value_eps (upper bound)
+
+    max_change_factor : 100.
+        Maximum change factor applied in non-parametric quantile mapping with
+        multiplicative or mixed trend preservation.
+
+    max_adjustment_factor : 9.
+        Maximum adjustment factor applied in non-parametric quantile mapping
+        with mixed trend preservation.
+
     n_quantiles : int, optional
         Number of quantile-quantile pairs used for non-parametric quantile
         mapping.
-    p_value_eps : float, optional
-        In order to keep p-values with numerically stable limits, they are
-        capped at p_value_eps (lower bound) and 1 - p_value_eps (upper bound).
-    max_change_factor : float, optional
-        Maximum change factor applied in non-parametric quantile mapping with
-        multiplicative or mixed trend preservation.
-    max_adjustment_factor : float, optional
-        Maximum adjustment factor applied in non-parametric quantile mapping
-        with mixed trend preservation.
-    adjust_p_values : boolean, optional
-        Adjust p-values for a perfect match in the reference period.
-    lower_bound : float, optional
-        Lower bound of values in x_obs_hist, x_sim_hist, and x_sim_fut.
-    lower_threshold : float, optional
-        Lower threshold of values in x_obs_hist, x_sim_hist, and x_sim_fut.
-        All values below this threshold are replaced by lower_bound in the end.
-    upper_bound : float, optional
-        Upper bound of values in x_obs_hist, x_sim_hist, and x_sim_fut.
-    upper_threshold : float, optional
-        Upper threshold of values in x_obs_hist, x_sim_hist, and x_sim_fut.
-        All values above this threshold are replaced by upper_bound in the end.
 
     Returns
     -------
-    x_sim_fut_ba : array
+    x_sim_fut_ba (y) : array
         Result of bias adjustment.
 
     """
-    lower = lower_bound is not None and lower_threshold is not None
-    upper = upper_bound is not None and upper_threshold is not None
-
-    # determine extreme value probabilities of future obs
-    if lower:
-        p_lower_obs_hist = np.mean(x_obs_hist < lower_threshold)
-        p_lower_sim_hist = np.mean(x_sim_hist < lower_threshold)
-        p_lower_sim_fut = np.mean(x_sim_fut < lower_threshold)
-        p_lower_target = uf.ccs_transfer_sim2obs(
-            p_lower_obs_hist, p_lower_sim_hist, p_lower_sim_fut)
-    if upper:
-        p_upper_obs_hist = np.mean(x_obs_hist > upper_threshold)
-        p_upper_sim_hist = np.mean(x_sim_hist > upper_threshold)
-        p_upper_sim_fut = np.mean(x_sim_fut > upper_threshold)
-        p_upper_target = uf.ccs_transfer_sim2obs(
-            p_upper_obs_hist, p_upper_sim_hist, p_upper_sim_fut)
-    if lower and upper:
-        p_lower_or_upper_target = p_lower_target + p_upper_target
-        if p_lower_or_upper_target > 1 + 1e-10:
-            msg = 'sum of p_lower_target and p_upper_target exceeds one'
-            warnings.warn(msg)
-            p_lower_target /= p_lower_or_upper_target
-            p_upper_target /= p_lower_or_upper_target
+    
+    # Fix parameters for 'tas' bias adjustment
+    # distribution='normal'
+    trend_preservation='additive'
+    p_value_eps=1e-10
+    max_change_factor=100.
+    max_adjustment_factor=9.
+    n_quantiles=50
 
     # use augmented quantile delta mapping to transfer the simulated
     # climate change signal to the historical observation
@@ -225,7 +199,7 @@ def map_quantiles_parametric_trend_preserving(
         x_obs_hist, x_sim_hist, x_sim_fut,
         trend_preservation, n_quantiles,
         max_change_factor, max_adjustment_factor,
-        True, lower_bound, upper_bound)
+        adjust_obs=True)
 
     # do a parametric quantile mapping of the values within thresholds
     x_source = x_sim_fut
@@ -236,62 +210,17 @@ def map_quantiles_parametric_trend_preserving(
     i_fit_sim_hist = np.ones(x_sim_hist.shape, dtype=bool)
     i_fit_source = np.ones(x_source.shape, dtype=bool)
     i_fit_target = np.ones(x_target.shape, dtype=bool)
-    if lower:
-        i_fit_obs_hist = np.logical_and(i_fit_obs_hist,
-                                        x_obs_hist > lower_threshold)
-        i_fit_sim_hist = np.logical_and(i_fit_sim_hist,
-                                        x_sim_hist > lower_threshold)
-        # make sure that lower_threshold_source < x_source 
-        # because otherwise sps.beta.ppf does not work
-        lower_threshold_source = \
-            np.percentile(x_source, 100.*p_lower_target) \
-            if p_lower_target > 0 else lower_bound if not upper else \
-            lower_bound - 1e-10 * (upper_bound - lower_bound)
-        i_lower = x_source <= lower_threshold_source
-        i_fit_source = np.logical_and(i_fit_source, np.logical_not(i_lower))
-        i_fit_target = np.logical_and(i_fit_target, x_target > lower_threshold)
-        y[i_lower] = lower_bound
-    if upper:
-        i_fit_obs_hist = np.logical_and(i_fit_obs_hist,
-                                        x_obs_hist < upper_threshold)
-        i_fit_sim_hist = np.logical_and(i_fit_sim_hist,
-                                        x_sim_hist < upper_threshold)
-        # make sure that x_source < upper_threshold_source
-        # because otherwise sps.beta.ppf does not work
-        upper_threshold_source = \
-            np.percentile(x_source, 100.*(1.-p_upper_target)) \
-            if p_upper_target > 0 else upper_bound if not lower else \
-            upper_bound + 1e-10 * (upper_bound - lower_bound)
-        i_upper = x_source >= upper_threshold_source
-        i_fit_source = np.logical_and(i_fit_source, np.logical_not(i_upper))
-        i_fit_target = np.logical_and(i_fit_target, x_target < upper_threshold)
-        y[i_upper] = upper_bound
 
     # map quantiles
     while np.any(i_fit_source):
         x_source_fit = x_source[i_fit_source]
         x_target_fit = x_target[i_fit_target]
-        spsdotwhat = sps.norm if distribution == 'normal' else \
-                     sps.weibull_min if distribution == 'weibull' else \
-                     sps.gamma if distribution == 'gamma' else \
-                     sps.beta if distribution == 'beta' else \
-                     sps.rice if distribution == 'rice' else \
-                     None
 
-        # fix location and scale parameters for fitting
-        floc = lower_threshold if lower else None
-        floc_source = lower_threshold_source if lower else None
-        fscale = upper_threshold - lower_threshold if lower and upper else None
-        fscale_source = upper_threshold_source - lower_threshold_source \
-                        if lower and upper else None
-
-        # because sps.rice.fit and sps.weibull_min.fit cannot handle fscale=None
-        if distribution in ['rice', 'weibull']:
-            fwords = {'floc': floc}
-            fwords_source = {'floc': floc_source}
-        else:
-            fwords = {'floc': floc, 'fscale': fscale}
-            fwords_source = {'floc': floc_source, 'fscale': fscale_source}
+        # define the distribution assumed as normal
+        spsdotwhat = sps.norm
+        # drop upper/lower bound assumptions in fit code
+        fwords = {'floc': None, 'fscale': None}
+        fwords_source = {'floc': None, 'fscale': None}
 
         # fit distributions to x_source and x_target
         shape_loc_scale_source = uf.fit(spsdotwhat, x_source_fit, fwords_source)
@@ -323,37 +252,8 @@ def map_quantiles_parametric_trend_preserving(
                    spsdotwhat.cdf(x_source_fit,
                    *shape_loc_scale_source)))
 
-        # compute target p-values
-        if adjust_p_values:
-            x_obs_hist_fit = x_obs_hist[i_fit_obs_hist]
-            x_sim_hist_fit = x_sim_hist[i_fit_sim_hist]
-            shape_loc_scale_obs_hist = uf.fit(spsdotwhat,
-                                       x_obs_hist_fit, fwords)
-            shape_loc_scale_sim_hist = uf.fit(spsdotwhat,
-                                       x_sim_hist_fit, fwords)
-            if shape_loc_scale_obs_hist is None \
-            or shape_loc_scale_sim_hist is None:
-                msg = 'unable to adjust p-values: leaving them unadjusted'
-                warnings.warn(msg)
-                p_target = p_source
-            else:
-                p_obs_hist = np.maximum(p_value_eps,
-                             np.minimum(1-p_value_eps,
-                             spsdotwhat.cdf(x_obs_hist_fit,
-                             *shape_loc_scale_obs_hist)))
-                p_sim_hist = np.maximum(p_value_eps,
-                             np.minimum(1-p_value_eps,
-                             spsdotwhat.cdf(x_sim_hist_fit,
-                             *shape_loc_scale_sim_hist)))
-                p_target = np.maximum(p_value_eps,
-                           np.minimum(1-p_value_eps,
-                           uf.transfer_odds_ratio(
-                           p_obs_hist, p_sim_hist, p_source)))
-        else:
-            p_target = p_source
-
         # map quantiles
-        y[i_fit_source] = spsdotwhat.ppf(p_target, *shape_loc_scale_target)
+        y[i_fit_source] = spsdotwhat.ppf(p_source, *shape_loc_scale_target)
         break
 
     return y
