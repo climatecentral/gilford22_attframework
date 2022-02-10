@@ -8,7 +8,7 @@ This license compatible with the MIT [LICENSE] employed in this repository. Sour
 which this software has been modified, is provided in the [/isimip3-source/](./isimip3-source/) directory.
 
 Author: [Daniel Gilford](https://github.com/dgilford)
-Last updated: 2/8/2022 by Daniel Gilford
+Last updated: 2/10/2022 by Daniel Gilford
 """
 
 # import modules to use in functions
