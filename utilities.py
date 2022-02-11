@@ -35,7 +35,7 @@ def dt64_yrslice(lower_yr=1985,upper_yr=2015):
 
 # define a function to wrap around the prime meridian 
 # (via https://github.com/pydata/xarray/issues/1005 solution)
-def xr_add_cyclic_slice(ds, dim='lon', period=None):
+def xr_add_cyclic_point(ds, dim='lon', period=None):
   if period is None:
     period = ds.sizes[dim] * ds.coords[dim][:2].diff(dim).item()
   first_point = ds.isel({dim: slice(1)})
