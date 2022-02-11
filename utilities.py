@@ -4,13 +4,14 @@ codebase, by first appending the directory that contains this set of utilities, 
 calling the particular function we want to use.
 
 Author: [Daniel Gilford](https://github.com/dgilford)
-Last updated: 1/31/2022 by Daniel Gilford
+Last updated: 2/3/2022 by Daniel Gilford
 """
 
 # import modules to use in functions
 import numpy as np
 import xarray as xr
 from datetime import datetime
+import os
 
 ### ------------------- DATETIME UTILITIES ------------------- ###
 
@@ -24,31 +25,26 @@ def get_dt64(ds):
     dt64=np.asarray(dt64)
     return(dt64)
 
-# Functions to find the middle element of a list (to find the middle time from a datetime64 array)
-# def middle_element_dt64(lst):
-#     return lst[len(lst) // 2]
-
-# def middle_element(lst):
-#   if len(lst) % 2 != 0:
-#     return lst[len(lst) // 2]
-#   else:
-#     return lst[len(lst) // 2 + len(lst) // 2 - 1]
-
-# Function to find the locations of the leap year in the index
-def is_leap_and_29Feb(s):
-    return (s.index.year % 4 == 0) & \
-           ((s.index.year % 100 != 0) | (s.index.year % 400 == 0)) & \
-           (s.index.month == 2) & (s.index.day == 29)
-
 # Function to take a slice between two years with dt64 type
 def dt64_yrslice(lower_yr=1985,upper_yr=2015):
     slice_range=[str(int(lower_yr))+'-01-01',str(int(upper_yr))+'-12-31']
     sliceout=slice(slice_range[0],slice_range[1])
     return(sliceout)
 
+### ------------------- VISUALIZATION UTILITIES ------------------- ###
+
+# define a function to wrap around the prime meridian 
+# (via https://github.com/pydata/xarray/issues/1005 solution)
+def xr_add_cyclic_slice(ds, dim='lon', period=None):
+  if period is None:
+    period = ds.sizes[dim] * ds.coords[dim][:2].diff(dim).item()
+  first_point = ds.isel({dim: slice(1)})
+  first_point.coords[dim] = first_point.coords[dim]+period
+  return xr.concat([ds, first_point], dim=dim)
+
 ### ------------------- DATA MANAGEMENT ------------------- ###
 
-# Function to 1d interpolation to fill missing values
+# Function using 1d interpolation to fill missing values
 def fill_nan(A):
     '''
     interpolate to fill nan values
@@ -60,3 +56,34 @@ def fill_nan(A):
     f = interpolate.interp1d(inds[good], A[good],bounds_error=False)
     B = np.where(np.isfinite(A),A,f(inds))
     return B
+
+# Function to load local zarr files/directories into an xarray dataset
+def load_zarr_local(loadpath,zarrname,chunks='auto'):
+    # define the path where the *.zarr data directory is located 
+    path=loadpath+zarrname
+    # check to make sure if the the directory exists
+    if(not(os.path.exists(path))):
+            raise Exception('local file {} does not exist'.format(zarrname))
+    # if the directory exists, load it with xarray, and return the data structure
+    zout=xr.open_zarr(path, chunks=chunks)
+    return(zout)
+
+# Function to save xarray datasets as zarr files/directories locally
+def save_zarr_local(ds,savepath,zarrname):
+    import zarr
+    # define the path where the *.zarr data directory should be saved
+    path=savepath+zarrname
+    # define the compression and encoding, then save to a zarr file directory
+    compressor = zarr.Blosc(cname='zstd', clevel=3)
+    encoding = {vname: {'compressor': compressor} for vname in ds.data_vars}
+    ds.to_zarr(path, encoding=encoding, consolidated=True, mode='w')
+
+### ------------------- METEOROLOGICAL UTILITIES ------------------- ###
+
+# Function to convert Celsius to kelvin
+def CtoK(data_in_Celsius):
+    return data_in_Celsius+273.15
+
+# Function to convert Kelvin to Celsius
+def KtoC(data_in_kelvin):
+    return data_in_kelvin-273.15
