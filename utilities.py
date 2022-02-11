@@ -78,7 +78,7 @@ def save_zarr_local(ds,savepath,zarrname):
     encoding = {vname: {'compressor': compressor} for vname in ds.data_vars}
     ds.to_zarr(path, encoding=encoding, consolidated=True, mode='w')
 
-### ------------------- METEOROLOGICAL UTILITIES ------------------- ###
+### ------------------- METEOROLOGICAL/PHYSICAL UTILITIES ------------------- ###
 
 # Function to convert Celsius to kelvin
 def CtoK(data_in_Celsius):
@@ -87,3 +87,7 @@ def CtoK(data_in_Celsius):
 # Function to convert Kelvin to Celsius
 def KtoC(data_in_kelvin):
     return data_in_kelvin-273.15
+
+# define a function to convert longitudes from 180W-180E to 0-360E
+def lon180to360(lon180):
+    return(lon180 % 360)
