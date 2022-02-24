@@ -12,6 +12,7 @@ import numpy as np
 import xarray as xr
 from datetime import datetime
 import os
+import random
 
 ### ------------------- DATETIME UTILITIES ------------------- ###
 
@@ -77,6 +78,36 @@ def save_zarr_local(ds,savepath,zarrname):
     compressor = zarr.Blosc(cname='zstd', clevel=3)
     encoding = {vname: {'compressor': compressor} for vname in ds.data_vars}
     ds.to_zarr(path, encoding=encoding, consolidated=True, mode='w')
+
+### -------------------STATISTICAL UTILITIES ------------------- ###
+
+# Function to randomly and uniformly resample a histogram from its counts
+def randomly_sample_histogram(hist,N=10_000,seed=616,bins=None):
+    
+    # create a cdf from the underlying histogram
+    cdf=np.cumsum(hist)
+
+    # if this is a cdf that has values in it, proceed to resample
+    if cdf[-1]>0:
+        cdf = cdf / cdf[-1]
+        
+        # set the random seed
+        random.seed(seed)
+        # get N random uniform values
+        values = np.random.rand(N)
+
+        # find their location/ranl
+        value_bins = np.searchsorted(cdf, values)
+
+        # resample
+        random_from_cdf = bins[value_bins]
+
+        # go back to the above program level, returning the resampled pdf
+        return(random_from_cdf)
+    
+    # otherwise, return missing values as the samples
+    else:
+        return(np.repeat(np.nan,N))
 
 ### ------------------- METEOROLOGICAL/PHYSICAL UTILITIES ------------------- ###
 
