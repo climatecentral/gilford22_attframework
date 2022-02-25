@@ -4,7 +4,7 @@ codebase, by first appending the directory that contains this set of utilities, 
 calling the particular function we want to use.
 
 Author: [Daniel Gilford](https://github.com/dgilford)
-Last updated: 2/3/2022 by Daniel Gilford
+Last updated: 2/24/2022 by Daniel Gilford
 """
 
 # import modules to use in functions
