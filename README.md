@@ -1,16 +1,16 @@
-# Code supporting "A novel multi-method framework for global real-time climate attribution" by Gilford et al. (2022, ASCMO)
+# Code supporting "A multi-method framework for global real-time climate attribution" by Gilford et al. (2022, ASCMO)
 
-This repository is the Python code base for "A novel multi-method framework for global real-time climate attribution" by Gilford et al. (2022), current being revised for publication in *[Advances in Statistical Climatology, Meteorology and Oceanography](https://advances-statistical-climatology-meteorology-oceanography.net/)*.
+This repository is the Python code base for "A multi-method framework for global real-time climate attribution" by Gilford et al. (2022), current in press at *[Advances in Statistical Climatology, Meteorology and Oceanography](https://advances-statistical-climatology-meteorology-oceanography.net/)*.
 
 Project abstract:
 
-> Human-driven climate change has caused extreme weather events to become more frequent in recent decades. Although increased and intense periods of extreme weather are expected consequences of anthropogenic climate warming, it remains challenging to rapidly and continuously assess the degree to which human activity alters the probability of specific events. This study introduces a new framework to enable the production and communication of global real-time estimates of how human-driven climate change has changed the likelihood of daily weather events. The framework's multi-method approach implements one model-based and two observation-based methods to provide ensemble attribution estimates with accompanying confidence levels. The framework is designed to be computationally lightweight to allow attributable probability changes to be calculated using forecasts or the latest observations. The framework is particularly suited for highlighting ordinary weather events that have been altered by human-caused climate change. An example application using daily maximum temperature in Phoenix, AZ, USA highlights the framework's effectiveness in estimating the attributable human influence (and deriving associated confidence levels) on observed daily temperatures. Global analyses show that the framework is capable of producing worldwide multi-method assessments of how human-caused climate change changes the likelihoods of daily maximum temperatures. For instance, over 56\% of the Earth's total land area all three framework methods agree that maximum temperatures greater than the pre-industrial 99th percentile have become at least twice as likely in today's human-influenced climate. Furthermore, over half of all tropical land (52\%) has high-tail probabilities of maximum temperature are at least 5 times more likely today than they were in pre-industrial because of attributable human-caused climate change. By systematically applying this framework to near-term forecasts or daily observations, global attribution analyses can be provided in real time. These new analyses create opportunities to enhance communication and provide input and/or context for policy, adaptation, human health and other human-system impact studies.
+> Human-driven climate change has caused a wide range of extreme weather events to become more frequent in recent decades. Although increased and intense periods of extreme weather are expected consequences of anthropogenic climate warming, it remains challenging to rapidly and continuously assess the degree to which human activity alters the probability of specific events. This study introduces a new framework to enable the production and communication of global real-time estimates of how human-driven climate change has changed the likelihood of daily weather events. The framework's multi-method approach implements one model-based and two observation-based methods to provide ensemble attribution estimates with accompanying confidence levels. The framework is designed to be computationally lightweight to allow attributable probability changes to be rapidly calculated using forecasts or the latest observations. The framework is particularly suited for highlighting ordinary weather events that have been altered by human-caused climate change. An example application using daily maximum temperature in Phoenix, AZ, USA highlights the framework's effectiveness in estimating the attributable human influence on observed daily temperatures (and deriving associated confidence levels). Global analyses show that the framework is capable of producing worldwide complementary observational- and model-based assessments of how human-caused climate change changes the likelihoods of daily maximum temperatures. For instance, over 56\% of the Earth's total land area all three framework methods agree that maximum temperatures greater than the pre-industrial 99th percentile have become at least twice as likely in today's human-influenced climate. Additionally over 52\% of land in the tropics, human-caused climate change is responsible for at least five-fold increases in the likelihood of pre-industrial 99th percentile maximum temperatures. By systematically applying this framework to near-term forecasts or daily observations, local attribution analyses can be provided in real time, worldwide. These new analyses create opportunities to enhance communication and provide input and/or context for policy, adaptation, human health and other ecosystem/human-system impact studies.
 
 If you have any questions, comments, or feedback on this work or code, please [contact Daniel](mailto:dgilford@climatecentral.org) or open an [Issue](https://github.com/climatecentral/gilford22_attframework/issues) in the repository.
 
 ## Citation
 
-If you use any part of this work, please cite this repository and include a link. Gilford et al. (2022) is still under review; upon publication please also cite the study. 
+If you use any part of this work, please cite this repository, Gilford et al. (2022), and include a link. The citation for Gilford et al. (2022) will be supplied upon full public release.
 
 ## Data
 
@@ -24,7 +24,31 @@ The observational and modeling data used in this work are not currently archived
 
 ## File Descriptions
 
-*TBD*
+### Figures:
+
+#### Main Text Figures:
+
+* **[Figure 1](./paper_figures/main/fig1.png)** - 
+* **[Figure 2](./paper_figures/main/fig2.pdf)** - _forthcoming_
+* **[Figure 3](./paper_figures/main/fig3.pdf)** - _forthcoming_
+* **[Figure 4](./paper_figures/main/fig2.pdf)** - _forthcoming_
+
+#### Supporting Figures:
+
+* **[Figure S1](./paper_figures/si/figS1.pdf)** -
+* **[Figure S2](./paper_figures/si/figS2.pdf)** -
+* **[Figure S3](./paper_figures/si/figS3.pdf)** - _forthcoming_
+* **[Figure S4](./paper_figures/si/figS4.pdf)** - _forthcoming_
+* **[Figure S5](./paper_figures/si/figS5.pdf)** - _forthcoming_
+* **[Figure S6](./paper_figures/si/figS6.pdf)** - _forthcoming_
+* **[Figure S7](./paper_figures/si/figS7.pdf)** - _forthcoming_
+* **[Figure S8](./paper_figures/si/figS8.pdf)** - _forthcoming_
+* **[Figure S9](./paper_figures/si/figS9.pdf)** - _forthcoming_
+* **[Figure S10a](./paper_figures/si/figS10a.pdf)** - 
+* **[Figure S10b](./paper_figures/si/figS10b.pdf)** -
+* **[Figure S10c](./paper_figures/si/figS10c.pdf)** -
+
+_Supporting Figures S10d-S12 can be constructed through modification of [BiasAdjust_comparison.ipynb](./BiasAdjust_comparison.ipynb)_.
 
 ## Authors
 
