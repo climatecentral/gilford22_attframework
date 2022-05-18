@@ -1,5 +1,9 @@
 # Code supporting "A multi-method framework for global real-time climate attribution" by Gilford et al. (2022, ASCMO)
 
+<p align="center">
+<img src="./paper_figures/main/fig1.png" alt="" width="720" height="225">
+</p>
+
 This repository is the Python code base for "A multi-method framework for global real-time climate attribution" by Gilford et al. (2022), current in press at *[Advances in Statistical Climatology, Meteorology and Oceanography](https://advances-statistical-climatology-meteorology-oceanography.net/)*.
 
 Project abstract:
