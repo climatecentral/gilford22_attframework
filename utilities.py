@@ -43,6 +43,20 @@ def xr_add_cyclic_point(ds, dim='lon', period=None):
   first_point.coords[dim] = first_point.coords[dim]+period
   return xr.concat([ds, first_point], dim=dim)
 
+# Function to fix xarray data structures with N96 grid so that SOUTH POLE points are set to missing
+def set_N96_SouthPole_missing(dsN96,METRIC):
+    # ds is an input xarray data structure with dimensions/variables "lat" and "lon"
+    # METRIC is the variable (a string) that we are fixing
+    
+    # subselect the locations that aren't the southern pole
+    midworld=dsN96[METRIC].sel(lon=slice(0,360),lat=slice(-89.5,90.5)).load()
+    # subselect the southern pole and fill it with missing values (np.nan)
+    sh=dsN96[METRIC].sel(lon=slice(0,360),lat=slice(-90.5,-89.5)).load()
+    sh.values[:]=np.nan
+    # merge the datasets and return to the above program level
+    together=xr.merge([midworld,sh])
+    return(together)
+
 ### ------------------- DATA MANAGEMENT ------------------- ###
 
 # Function using 1d interpolation to fill missing values
@@ -78,6 +92,13 @@ def save_zarr_local(ds,savepath,zarrname):
     compressor = zarr.Blosc(cname='zstd', clevel=3)
     encoding = {vname: {'compressor': compressor} for vname in ds.data_vars}
     ds.to_zarr(path, encoding=encoding, consolidated=True, mode='w')
+
+# Function to find the middle element of a list
+def middle_element(lst):
+  if len(lst) % 2 != 0:
+    return lst[len(lst) // 2]
+  else:
+    return lst[len(lst) // 2 + len(lst) // 2 - 1]
 
 ### -------------------STATISTICAL UTILITIES ------------------- ###
 
