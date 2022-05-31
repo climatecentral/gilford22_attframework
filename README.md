@@ -41,7 +41,12 @@ Analysis output data files that are small enough to be included here are found i
 
 ### Notebooks
 
-* 
+* **forthcoming** -
+
+### Function Modules
+
+* **[analysisfx](./analysisfx.py)** - Set of utility functions used in the codebase
+* **[utilities](./utilities.py)** - Set of analysis functions used in the codebase
 
 ### Figures:
 
