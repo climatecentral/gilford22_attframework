@@ -64,7 +64,7 @@ Analysis output data files that are small enough to be included here are found i
 * **[Figure S11b](./paper_figures/si/figS11b.pdf)** - Scatter plot of example climate model bias adjustments between forced and natural periods
 * **[Figure S11c](./paper_figures/si/figS11c.pdf)** - Seasonal cycles of observed and modeled maximum temperature before/after bias
 
-_Supporting Figures S11d-S12 can be constructed through modification of [BiasAdjust_comparison.ipynb](./BiasAdjust_comparison.ipynb)_.
+_Supporting Figures [S11d](./paper_figures/si/figS11d.pdf), [S12](./paper_figures/si/figS12.pdf), and [S13](./paper_figures/si/figS13.pdf) can be constructed through modification of [BiasAdjust_comparison.ipynb](./BiasAdjust_comparison.ipynb)_
 
 ## Authors
 
