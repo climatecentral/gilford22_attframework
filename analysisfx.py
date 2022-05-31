@@ -22,7 +22,6 @@ def global_xr_regression(yx,ts,missnum=-999):
     slope_yx = xr.full_like(yx.groupby('time.month').mean().squeeze().copy(deep='True'),np.nan,dtype='float')
     stderr_yx=slope_yx.copy(deep=True)
     
-    
     # find the valid locations
     validt=yx.where(yx>missnum)
     
