@@ -95,7 +95,8 @@ def save_zarr_local(ds,savepath,zarrname):
 
 # Function to find the middle element of a list
 def middle_element(lst):
-    return lst[len(lst) // 2]
+    middlei=(len(lst) - 1)//2
+    return(lst[middlei])
 
 ### -------------------STATISTICAL UTILITIES ------------------- ###
 
