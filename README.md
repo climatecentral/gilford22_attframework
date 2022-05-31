@@ -39,6 +39,10 @@ Analysis output data files that are small enough to be included here are found i
 
 ## File Descriptions
 
+### Notebooks
+
+* 
+
 ### Figures:
 
 #### Main Text Figures:
@@ -51,7 +55,7 @@ Analysis output data files that are small enough to be included here are found i
 #### Supporting Figures:
 
 * **[Figure S1](./paper_figures/si/figS1.pdf)** - Timeseries of observed and modeled global mean surface temperature anomalies, 1880-present
-* **[Figure S2](./paper_figures/si/figS2.pdf)** - Calendar year after which Berkeley Daily Maximum Temperature data is maintained (through present)
+* **[Figure S2](./paper_figures/si/figS2.pdf)** - Year after which Berkeley Daily Maximum Temperature data is maintained (through present)
 * **[Figure S3](./paper_figures/si/figS3.pdf)** - Maps of monthly observation-based median scale factors
 * **[Figure S4](./paper_figures/si/figS4.pdf)** - _forthcoming_
 * **[Figure S5](./paper_figures/si/figS5.pdf)** - _forthcoming_
