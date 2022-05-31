@@ -41,7 +41,7 @@ The observational and modeling data used in this work are not currently archived
 
 * **[Figure S1](./paper_figures/si/figS1.pdf)** -
 * **[Figure S2](./paper_figures/si/figS2.pdf)** -
-* **[Figure S3](./paper_figures/si/figS3.pdf)** - _forthcoming_
+* **[Figure S3](./paper_figures/si/figS3.pdf)** -
 * **[Figure S4](./paper_figures/si/figS4.pdf)** - _forthcoming_
 * **[Figure S5](./paper_figures/si/figS5.pdf)** - _forthcoming_
 * **[Figure S6](./paper_figures/si/figS6.pdf)** - _forthcoming_
