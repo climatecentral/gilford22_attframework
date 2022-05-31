@@ -50,20 +50,21 @@ Analysis output data files that are small enough to be included here are found i
 
 #### Supporting Figures:
 
-* **[Figure S1](./paper_figures/si/figS1.pdf)** - 
-* **[Figure S2](./paper_figures/si/figS2.pdf)** -
-* **[Figure S3](./paper_figures/si/figS3.pdf)** -
+* **[Figure S1](./paper_figures/si/figS1.pdf)** - Timeseries of observed and modeled global mean surface temperature anomalies, 1880-present
+* **[Figure S2](./paper_figures/si/figS2.pdf)** - Calendar year after which Berkeley Daily Maximum Temperature data is maintained (through present)
+* **[Figure S3](./paper_figures/si/figS3.pdf)** - Maps of monthly observation-based median scale factors
 * **[Figure S4](./paper_figures/si/figS4.pdf)** - _forthcoming_
 * **[Figure S5](./paper_figures/si/figS5.pdf)** - _forthcoming_
 * **[Figure S6](./paper_figures/si/figS6.pdf)** - _forthcoming_
 * **[Figure S7](./paper_figures/si/figS7.pdf)** - _forthcoming_
 * **[Figure S8](./paper_figures/si/figS8.pdf)** - _forthcoming_
 * **[Figure S9](./paper_figures/si/figS9.pdf)** - _forthcoming_
-* **[Figure S10a](./paper_figures/si/figS10a.pdf)** - 
-* **[Figure S10b](./paper_figures/si/figS10b.pdf)** -
-* **[Figure S10c](./paper_figures/si/figS10c.pdf)** -
+* **[Figure S10](./paper_figures/si/figS10.pdf)** - _forthcoming_
+* **[Figure S11a](./paper_figures/si/figS11a.pdf)** - Empirical CDFs of maximum temperatures before/after biasadjustment
+* **[Figure S11b](./paper_figures/si/figS11b.pdf)** - Scatter plot of example climate model bias adjustments between forced and natural periods
+* **[Figure S11c](./paper_figures/si/figS11c.pdf)** - Seasonal cycles of observed and modeled maximum temperature before/after bias
 
-_Supporting Figures S10d-S12 can be constructed through modification of [BiasAdjust_comparison.ipynb](./BiasAdjust_comparison.ipynb)_.
+_Supporting Figures S11d-S12 can be constructed through modification of [BiasAdjust_comparison.ipynb](./BiasAdjust_comparison.ipynb)_.
 
 ## Authors
 
