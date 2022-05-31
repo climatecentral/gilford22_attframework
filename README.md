@@ -16,15 +16,26 @@ If you have any questions, comments, or feedback on this work or code, please [c
 
 If you use any part of this work, please cite this repository, Gilford et al. (2022), and include a link. The citation for Gilford et al. (2022) will be supplied upon full public release.
 
-## Data
+## Data Availability
 
-The observational and modeling data used in this work are not currently archived. In the future, we intend to provide them on Zenodo with a doi.
+The Gridded Berkeley Earth Surface Maximum Temperature Anomaly Field was retrieved in March 2019 via the [WMO Climate Explorer tool](https://climexp.knmi.nl/select.cgi?id=someone@somewhere&field=berkeley_tmax_daily). The Met Office Hadley Centre/Climatic Research Unit global surface temperature data set, HadCRUT5 version 5.0.1.0, was retrieved on 17 August 2021 from the [Met Office Hadley Centre](https://www.metoffice.gov.uk/hadobs/hadcrut5/data/current/download.html). Coupled Model Intercomparison Project phase 5 records were retrieved in November 2018 from the [Centre for Environmental Analysis](https://help.ceda.ac.uk/article/4465-cmip5-data).
+
+Analysis output data files that are small enough to be included here are found in [the data directory](./data/); the remaining output analyses are available from [the author](mailto:dgilford@climatecentral.org) upon reasonable request.
 
 ## Getting Started
 
-### Dependencies
+### Package Dependencies
 
-*Dependencies and code details are forthcoming*
+##### Primary Analyses
+* [numpy](https://numpy.org/doc/stable/index.html)
+* [xarray](https://docs.xarray.dev/en/stable/)
+* [scipy](https://scipy.org/)
+
+##### Visualization and Validation
+* [matplotlib.pyplot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html)
+* [cartopy](https://scitools.org.uk/cartopy/docs/latest/)
+* [statsmodels](https://www.statsmodels.org/stable/index.html)
+* [xhistogram](https://xhistogram.readthedocs.io/en/latest/)
 
 ## File Descriptions
 
@@ -32,14 +43,14 @@ The observational and modeling data used in this work are not currently archived
 
 #### Main Text Figures:
 
-* **[Figure 1](./paper_figures/main/fig1.png)** - 
+* **[Figure 1](./paper_figures/main/fig1.png)** - Flowchart of study's attribution analysis, including observation- and model-based methods
 * **[Figure 2](./paper_figures/main/fig2.pdf)** - _forthcoming_
 * **[Figure 3](./paper_figures/main/fig3.pdf)** - _forthcoming_
 * **[Figure 4](./paper_figures/main/fig2.pdf)** - _forthcoming_
 
 #### Supporting Figures:
 
-* **[Figure S1](./paper_figures/si/figS1.pdf)** -
+* **[Figure S1](./paper_figures/si/figS1.pdf)** - 
 * **[Figure S2](./paper_figures/si/figS2.pdf)** -
 * **[Figure S3](./paper_figures/si/figS3.pdf)** -
 * **[Figure S4](./paper_figures/si/figS4.pdf)** - _forthcoming_
