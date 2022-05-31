@@ -134,3 +134,4 @@ dmypy.json
 # Data too large to archive here, added by Gilford
 data/cmip5/
 data/berkeley/
+data/analysis/*beta*
