@@ -58,7 +58,7 @@ Additional packages for visualization and validation include [matplotlib.pyplot]
 * **[Figure S1](./paper_figures/si/figS1.pdf)** - Timeseries of observed and modeled global mean surface temperature anomalies, 1880-present
 * **[Figure S2](./paper_figures/si/figS2.pdf)** - Year after which Berkeley Daily Maximum Temperature data is maintained (through present)
 * **[Figure S3](./paper_figures/si/figS3.pdf)** - Maps of monthly observation-based median scale factors
-* **[Figure S4](./paper_figures/si/figS4.pdf)** - _forthcoming_
+* **[Figure S4](./paper_figures/si/figS4.pdf)** - Maps of monthly/quantile observation-based quantile scale factors
 * **[Figure S5](./paper_figures/si/figS5.pdf)** - _forthcoming_
 * **[Figure S6](./paper_figures/si/figS6.pdf)** - _forthcoming_
 * **[Figure S7](./paper_figures/si/figS7.pdf)** - _forthcoming_
