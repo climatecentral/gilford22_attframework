@@ -24,9 +24,8 @@ Analysis output data files that are small enough to be included here are found i
 
 ## Getting Started
 
-### Package Dependencies
+### Key Analysis Code Dependencies
 
-##### Primary Analyses
 * [numpy](https://numpy.org/doc/stable/index.html)
 * [xarray](https://docs.xarray.dev/en/stable/)
 * [scipy](https://scipy.org/)
