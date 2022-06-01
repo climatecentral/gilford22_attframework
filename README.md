@@ -24,18 +24,14 @@ Analysis output data files that are small enough to be included here are found i
 
 ## Getting Started
 
-### Package Dependencies
+### Key Analysis Code Dependencies
 
-##### Primary Analyses
 * [numpy](https://numpy.org/doc/stable/index.html)
 * [xarray](https://docs.xarray.dev/en/stable/)
 * [scipy](https://scipy.org/)
+* [random](https://docs.python.org/3/library/random.html)
 
-##### Visualization and Validation
-* [matplotlib.pyplot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html)
-* [cartopy](https://scitools.org.uk/cartopy/docs/latest/)
-* [statsmodels](https://www.statsmodels.org/stable/index.html)
-* [xhistogram](https://xhistogram.readthedocs.io/en/latest/)
+Additional packages for visualization and validation include [matplotlib.pyplot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.html), [cartopy](https://scitools.org.uk/cartopy/docs/latest/), [statsmodels](https://www.statsmodels.org/stable/index.html), and [xhistogram](https://xhistogram.readthedocs.io/en/latest/).
 
 ## File Descriptions
 
