@@ -37,7 +37,7 @@ Additional packages for visualization and validation include [matplotlib.pyplot]
 
 ### Notebooks
 
-* **forthcoming** -
+* **descriptions forthcoming**
 
 ### Function Modules
 
