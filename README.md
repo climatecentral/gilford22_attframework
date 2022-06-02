@@ -60,7 +60,7 @@ Additional packages for visualization and validation include [matplotlib.pyplot]
 * **[Figure S3](./paper_figures/si/figS3.pdf)** - Maps of monthly observation-based median scale factors
 * **[Figure S4](./paper_figures/si/figS4.pdf)** - Maps of monthly/quantile observation-based quantile scale factors
 * **[Figure S5](./paper_figures/si/figS5.pdf)** - Maps of monthly median-scaled probability ratios at the 96.7th percentile
-* **[Figure S6](./paper_figures/si/figS6.pdf)** - _forthcoming_
+* **[Figure S6](./paper_figures/si/figS6.pdf)** - Maps of monthly quantile-scaled probability ratios at the 96.7th percentile
 * **[Figure S7](./paper_figures/si/figS7.pdf)** - _forthcoming_
 * **[Figure S8](./paper_figures/si/figS8.pdf)** - _forthcoming_
 * **[Figure S9](./paper_figures/si/figS9.pdf)** - _forthcoming_
