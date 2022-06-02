@@ -37,3 +37,42 @@ def global_xr_regression(yx,ts,missnum=-999):
     
     # go back to the above program level
     return(slope_yx,stderr_yx)
+
+
+# Function to calculate the Probability Ratio from a dataset, 
+# a (Natural) temperature threshold, and natural count of days
+def calculate_PR_actualNat(dat,Tthresh,dim='time'):
+    
+    # find the locations where we exceed the natural threshold
+    # then group those values by year at each location
+    # then count how many are valid at each location
+    # then take an average over all years
+    forced_counts=dat.forced107.where(dat.forced107>Tthresh).groupby('time.year').count(dim=dim).mean('year')
+    
+    # copy the array and fill it with natural counts
+    natural_counts=dat.natural.where(dat.natural>Tthresh).groupby('time.year').count(dim=dim).mean('year')
+    
+    # calculate the probability ratio (PR)
+    PR=forced_counts/natural_counts
+    
+    # go back to the above program level
+    return(PR)
+
+# Function to calculate the Probability Ratio from a dataset, 
+# using an specified temperature threshold--typically from the counterfactual ("natural") 
+def calculate_PR_Tthresh(dat,Tthresh,forced='forced',cf='counterfactual',dim='time'):
+    
+    # find the locations where we exceed the natural threshold
+    # then group those values by year at each location
+    # then count how many are valid at each location
+    # then take an average over all years
+    forced_counts=dat[forced].where(dat[forced]>Tthresh).groupby('time.year').count(dim=dim).mean('year')
+    
+    # copy the array and fill it with natural counts
+    natural_counts=dat[cf].where(dat[cf]>Tthresh).groupby('time.year').count(dim=dim).mean('year')
+    
+    # calculate the probability ratio (PR)
+    PR=forced_counts/natural_counts
+    
+    # go back to the above program level
+    return(PR)
