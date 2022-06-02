@@ -127,6 +127,15 @@ def randomly_sample_histogram(hist,N=10_000,seed=616,bins=None):
     # otherwise, return missing values as the samples
     else:
         return(np.repeat(np.nan,N))
+    
+# Function to subset the natcount data structure along a single specific percentile
+def get_1percentile_natcounts(pi,natcountdat):
+    
+    # slice the data along the chosen percentile
+    ppi=natcountdat.sel(pp=pi)
+        
+    # go back to the above program level
+    return(ppi)
 
 ### ------------------- METEOROLOGICAL/PHYSICAL UTILITIES ------------------- ###
 
