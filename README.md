@@ -14,7 +14,9 @@ If you have any questions, comments, or feedback on this work or code, please [c
 
 ## Citation
 
-If you use any part of this work, please cite this repository, Gilford et al. (2022), and include a link. The citation for Gilford et al. (2022) will be supplied upon full public release.
+If you use any part of this work, please cite this repository, Gilford et al. (2022), and include a link.
+
+> Gilford, D. M., Pershing, A., Strauss, B. H., Haustein, K., and Otto, F. E. L.: A multi-method framework for global real-time climate attribution, Adv. Stat. Clim. Meteorol. Oceanogr., 8, 135–154, https://doi.org/10.5194/ascmo-8-135-2022, 2022.
 
 ## Data Availability
 
